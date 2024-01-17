@@ -4,15 +4,15 @@ import java.util.*;
 
 public class CoffeeShop {
 
-    private static final int MAX_DISTANCE = 10000;
+    private static final double MAX_DISTANCE = 10000;
     private Queue<Order> orders = new LinkedList<>();
     private Map<String, Customer> registeredCustomers = new HashMap<>();
 
-    public void placeOrder(Order order) {
+    public void placeOrder(Order order, double distanceInMetres) {
         placeOrder(order, MAX_DISTANCE);
     }
 
-    public void placeOrder(Order order, int distanceInMetres) {
+    public void placeOrder(Order order, Double distanceInMetres) {
         if (distanceInMetres <= 200) {
             order = order.withStatus(OrderStatus.Urgent);
         }
