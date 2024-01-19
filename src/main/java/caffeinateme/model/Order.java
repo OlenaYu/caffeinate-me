@@ -59,6 +59,10 @@ public class Order {
         return new OrderBuilder(quantity, product);
     }
 
+    public void updateStatusTo(OrderStatus status) {
+        this.status = status;
+    }
+
     public static class OrderBuilder {
 
         private final int quantity;

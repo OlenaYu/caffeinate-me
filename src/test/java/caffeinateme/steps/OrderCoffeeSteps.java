@@ -47,5 +47,8 @@ public class OrderCoffeeSteps {
                 .orElseThrow(() -> new AssertionError("No order found!"));
         assertThat(cathysOrder.getStatus()).isEqualTo(expectedStatus);
     }
-
+    @When("Cathy is {int} minutes away")
+    public void cathyIsNMinutesAway(int etaInMinutes) {
+        coffeeShop.setCustomerETA(customer, etaInMinutes);
+    }
 }

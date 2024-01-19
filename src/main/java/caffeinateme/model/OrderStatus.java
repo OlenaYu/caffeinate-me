@@ -1,5 +1,5 @@
 package caffeinateme.model;
 
 public enum OrderStatus {
-    Normal, Urgent, High
+    Normal, High, Urgent
 }
