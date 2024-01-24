@@ -1,42 +1,46 @@
 package caffeinateme.model;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Order {
+    private final int quantity;
+    private final String product;
     private final Customer customer;
-    private final List<OrderItem> items;
     private OrderStatus status;
-    private String comment;
-    private final Long orderNumber;
-
-    private final static AtomicLong ORDER_NUMBERS = new AtomicLong();
-
-    public Order(List<OrderItem> items, Customer customer) {
-        this(items, customer, OrderStatus.Normal, "");
+    /*
+    By providing multiple constructors (like Order), you offer flexibility and ease of use to the consumers of the Order class,
+    allowing them to create orders with various configurations without the need for complex initialization.
+     */
+    public Order(int quantity, String product, Customer customer) {
+        this(quantity,product, customer, OrderStatus.Normal);
     }
 
-    public Order(List<OrderItem> items, Customer customer, String comment) {
-        this(items, customer, OrderStatus.Normal, comment);
-    }
-
-    public Order(List<OrderItem> items, Customer customer, OrderStatus status, String comment) {
-        this(items, customer, status, comment, ORDER_NUMBERS.incrementAndGet());
-    }
-
-
-    public Order(List<OrderItem> items, Customer customer, OrderStatus status, String comment, long orderNumber) {
-        this.items = items;
+    public Order(int quantity, String product, Customer customer, OrderStatus status) {
+        this.quantity = quantity;
+        this.product = product;
         this.customer = customer;
         this.status = status;
-        this.comment = comment;
-        this.orderNumber = orderNumber;
     }
 
-    public Order withComment(String comment) {
-        this.comment = comment;
-        return this;
-    }
+    //private final Long orderNumber;
+
+   // private final static AtomicLong ORDER_NUMBERS = new AtomicLong();
+
+
+//    public Order(List<OrderItem> items, Customer customer) {
+//        this(items, customer, OrderStatus.Normal, "");
+//    }
+
+//    public Order(List<OrderItem> items, Customer customer, String comment) {
+//        this(items, customer, OrderStatus.Normal, comment);
+//    }
+
+//    public Order(int items, String customer, Customer status, OrderStatus comment) {
+//        this(items, customer, status, comment, ORDER_NUMBERS.incrementAndGet());
+//    }
+
 
     public Order withStatus(OrderStatus status) {
         this.status = status;
@@ -47,9 +51,9 @@ public class Order {
         return status;
     }
 
-    public List<OrderItem> getItems() { return items; }
+   // public List<OrderItem> getItems() { return items; }
 
-    public String getComment() { return comment; }
+   // public String getComment() { return comment; }
 
     public Customer getCustomer() {
         return customer;
@@ -63,6 +67,14 @@ public class Order {
         this.status = status;
     }
 
+    public String getProduct() {
+        return product;
+    }
+
+    public int getQuantity() {
+    return quantity;
+   }
+
     public static class OrderBuilder {
 
         private final int quantity;
@@ -74,7 +86,21 @@ public class Order {
         }
 
         public Order forCustomer(Customer customerName) {
-            return new Order(List.of(new OrderItem(product, quantity)), customerName);
+            return new Order(quantity, product, customerName);
         }
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return quantity == order.quantity &&
+                Objects.equals(product, order.product) &&
+                Objects.equals(customer, order.customer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(quantity, product, customer);
     }
 }
